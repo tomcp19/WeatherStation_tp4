@@ -79,7 +79,7 @@ namespace OpenWeatherAPI
 
                 else
                 {
-                    throw new ArgumentException("GetOneCallAsync: La clé d'API ne doit pas être vide");
+                    throw new ArgumentException("GetOneCallAsync: La clé d'API ne doit pas être vide ou nulle");
                 }
             }
 
@@ -121,7 +121,7 @@ namespace OpenWeatherAPI
 
                 else
                {
-                    throw new ArgumentException("GetCurrentWeatherAsync: La clé d'API ne doit pas être vide");
+                    throw new ArgumentException("GetCurrentWeatherAsync: La clé d'API ne doit pas être vide ou nulle");
                 }
             }
 
@@ -136,31 +136,60 @@ namespace OpenWeatherAPI
 
         private async Task<OpenWeatherOneCallModel> doOneCall()
         {
-
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(longUrl))
-            {
-                if (response.IsSuccessStatusCode)
+            try {
+                if (ApiHelper.ApiClient != null)
                 {
-                    OpenWeatherOneCallModel result = await response.Content.ReadAsAsync<OpenWeatherOneCallModel>();
-                    return result;
-                }
+                    using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(longUrl))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            OpenWeatherOneCallModel result = await response.Content.ReadAsAsync<OpenWeatherOneCallModel>();
+                            return result;
+                        }
 
-                return null;
+                        return null;
+                    }
+                }
+            
+                else
+                {
+                    throw new ArgumentException("doOneCall: ApiClient / le client http doit être initialisé");
+                }
+             }
+            catch (Exception e)
+            {
+                // Debug.WriteLine(e.Message);
+                throw e;
             }
         }
 
         private async Task<OWCurrentWeaterModel> doCurrentWeatherCall()
-        {            
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(longUrl))
+        {
+            try
             {
-                if (response.IsSuccessStatusCode)
-                {
-                    OWCurrentWeaterModel result = await response.Content.ReadAsAsync<OWCurrentWeaterModel>();
-                    return result;
+                if (ApiHelper.ApiClient != null)
+                { 
+                    using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(longUrl))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            OWCurrentWeaterModel result = await response.Content.ReadAsAsync<OWCurrentWeaterModel>();
+                            return result;
+                        }
+
+                        return null;
+
+                    }
                 }
-
-                return null;
-
+                else
+                {
+                    throw new ArgumentException("doCurrentWeatherCall: ApiClient / le client http doit être initialisé");
+                }
+            }
+            catch (Exception e)
+            {
+               // Debug.WriteLine(e.Message);
+                throw e;
             }
         }
     }

@@ -15,8 +15,10 @@ namespace OpenWeatherAPITests
         [Fact]
         public async Task GetOneCallAsync_IfApiKeyEmptyOrNull_ThrowArgumentException() 
         {
-            owp.ApiKey = "";
-            //owp.ApiKey = null;
+            //owp.ApiKey = "";
+            owp.ApiKey = null;
+
+            //enlever l'injection de l'api dans le mainWindow est plus efficace pour tester
             await Assert.ThrowsAsync<ArgumentException>(() => owp.GetOneCallAsync());
         }
 
@@ -29,19 +31,21 @@ namespace OpenWeatherAPITests
             await Assert.ThrowsAsync<ArgumentException>(() => owp.GetCurrentWeatherAsync());
         }
 
-       /* //Afficher le message de l’exception dans l’erreur que le client http n’est pas initialisé.
+        //Afficher le message de l’exception dans l’erreur que le client http n’est pas initialisé.
         [Fact]
-        public void GetOneCallAsync_IfApiHelperNotInitialized_ThrowArgumentException() 
-        { 
-
+        public async Task GetOneCallAsync_IfApiHelperNotInitialized_ThrowArgumentException() 
+        {
+            ApiHelper.ApiClient = null;
+            await Assert.ThrowsAsync<ArgumentException>(() => owp.GetOneCallAsync());
         }
-
+        
         //Afficher le message de l’exception dans l’erreur que le client http n’est pas initialisé
         [Fact]
-        public void GetCurrentWeatherAsync_IfApiHelperNotInitialized_ThrowArgumentException() 
-        { 
-
-        }*/
+        public async Task GetCurrentWeatherAsync_IfApiHelperNotInitialized_ThrowArgumentException() 
+        {
+            ApiHelper.ApiClient = null;
+            await Assert.ThrowsAsync<ArgumentException>(() => owp.GetCurrentWeatherAsync());
+        }
 
         
 
