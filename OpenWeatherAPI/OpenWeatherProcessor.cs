@@ -35,7 +35,7 @@ namespace OpenWeatherAPI
 
         private string longUrl;
 
-        public string ApiKey { get; set; }
+        public string ApiKey { get; set; } = "9c5fc0b41ba43f61f3fc91aec078aaaa";
 
         private OpenWeatherProcessor()
         {
