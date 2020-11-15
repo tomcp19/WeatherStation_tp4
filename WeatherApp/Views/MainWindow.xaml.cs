@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using WeatherApp.ViewModels;
+using WeatherApp.Models;
+using System.Diagnostics;
 
 namespace WeatherApp
 {
@@ -15,6 +17,9 @@ namespace WeatherApp
             InitializeComponent();
 
             /// TODO : Faire les appels de configuration ici ainsi que l'initialisation
+            var APIKEY = AppConfiguration.GetValue("OWApiKey");
+            //Debug.WriteLine("MainWindow API key" + APIKEY); //fonctionnel
+            
 
             vm = new TemperatureViewModel();
 
